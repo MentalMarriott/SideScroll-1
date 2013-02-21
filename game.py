@@ -1,58 +1,74 @@
-import pyglet
-from pyglet.window import key
-from pyglet.window import mouse
-from pyglet.gl import *
+"""SideScroll game"""
+
 from pyglet import clock
+from pyglet.sprite import Sprite
+from pyglet.image import load
+from pyglet.gl import *
+from pyglet.window import Window, key, mouse
+from pyglet.window.key import KeyStateHandler
 
-window = pyglet.window.Window()
+# The images used for sprites
+images = {
+    'arch':   load('sprites/arch-rotated.png'),
+    'bullet': load('sprites/tilde.png'),
+    'star':   load('sprites/star.png'),
+}
 
-tilde_bullet = pyglet.image.load('tilde.png')
-#ship_x and ship_y are location of ship currently
-#test
-bullet = pyglet.sprite.Sprite(tilde_bullet, x=-50, y=-50)
+# The sprites
 
-arch_image = pyglet.image.load('arch1.png')
-arch = pyglet.sprite.Sprite(arch_image, x=50, y=50)
+class Game(Window):
+    def __init__(self):
+        """This is run when the game is created"""
+        super(Game, self).__init__()
 
+        # Create the sprites
+        self.arch = Sprite(images['arch'], x=50, y=50)
+        self.bullet = Sprite(images['bullet'], x=-50, y=-50)
 
-########################## Controls ################################
-def update(dt):
-    # Move 100 pixels per second
-    if keyboard[key.RIGHT]: arch.x += dt * 200
+        # A handler that watches the keyboard state
+        self.keyboard = KeyStateHandler()
+        self.set_handlers(self.keyboard)
 
-    #move 100px per started
-    if keyboard[key.LEFT]: arch.x -= dt * 200
+        # Call update() 60 times a second
+        clock.schedule_interval(self.update, 1/60.0)
 
-    #move up 100px/s
-    if keyboard[key.UP]: arch.y += dt * 200
+    def on_draw(self):
+        """Clear the window and draw the sprites"""
+        self.clear()
+        self.arch.draw()
+        self.bullet.draw()
 
-    #down 100px/s
-    if keyboard[key.DOWN]: arch.y -= dt * 200
+    def on_mouse_press(self, x, y, button, modifiers):
+        """This is run when a mouse button is pressed"""
+        if button == mouse.LEFT:
+            print "The left mouse button was pressed."
+        elif button == mouse.RIGHT:
+            print "The right mouse button was pressed."
 
-    #fire if spce bar pressed
-    #if keyboard[key.SPACE]: fire() 
+    def update(self, dt):
+        """This is called on every update
 
-#updates
-pyglet.clock.schedule_interval(update, 1/60.0)
+        It uses the keyboard input to move the player
+        at around 200 pixels per second"""
 
-keyboard = key.KeyStateHandler()
-window.push_handlers(keyboard)
+        if self.keyboard[key.RIGHT]:
+            self.arch.x += dt * 200
 
+        if self.keyboard[key.LEFT]:
+            self.arch.x -= dt * 200
 
-############################## loads on start
-@window.event
-def on_draw():
-	window.clear()
-	arch.draw()
-	bullet.draw()
-   
-@window.event
-def on_mouse_press(x, y, button, modifiers):
-    if button == mouse.LEFT:
-        print 'The left mouse button was pressed.'
-    elif button == mouse.RIGHT:
-	print 'Right mouse'
+        if self.keyboard[key.UP]:
+            self.arch.y += dt * 200
 
+        if self.keyboard[key.DOWN]:
+            self.arch.y -= dt * 200
 
+        # Fire if spce bar pressed
+        if self.keyboard[key.SPACE]:
+            self.fire()
 
+    def fire(self):
+        print "Fire!"
+
+window = Game()
 pyglet.app.run()
