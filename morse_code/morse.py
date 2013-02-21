@@ -1,3 +1,4 @@
+#This converts words from letter to binary via an switch like function
 from sys import argv
 
 script, words = argv
