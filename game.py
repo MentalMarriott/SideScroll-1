@@ -6,28 +6,33 @@ from pyglet.image import load
 from pyglet.gl import *
 from pyglet.window import Window, key, mouse
 
-tilde_bullet = load('tilde.png')
-#ship_x and ship_y are location of ship currently
-#test
-bullet = Sprite(tilde_bullet, x=-50, y=-50)
+# The images used for sprites
+images = {
+    'bullet': load('tilde.png'),
+    'arch': load('arch1.png'),
+}
 
-arch_image = load('arch1.png')
-arch = Sprite(arch_image, x=50, y=50)
+# The sprites
+bullet = Sprite(images['bullet'], x=-50, y=-50)
+arch = Sprite(images['arch'], x=50, y=50)
 
-
-########################## Controls ################################
 def update(dt):
-    # Move 100 pixels per second
-    if keyboard[key.RIGHT]: arch.x += dt * 200
+    """This is called on every update
 
-    #move 100px per started
-    if keyboard[key.LEFT]: arch.x -= dt * 200
+    It uses the keyboard input to move the player
+    at around 200 pixels per second"""
+    
+    if keyboard[key.RIGHT]:
+        arch.x += dt * 200
 
-    #move up 100px/s
-    if keyboard[key.UP]: arch.y += dt * 200
+    if keyboard[key.LEFT]:
+        arch.x -= dt * 200
 
-    #down 100px/s
-    if keyboard[key.DOWN]: arch.y -= dt * 200
+    if keyboard[key.UP]:
+        arch.y += dt * 200
+        
+    if keyboard[key.DOWN]:
+        arch.y -= dt * 200
 
     #fire if spce bar pressed
     #if keyboard[key.SPACE]: fire()
