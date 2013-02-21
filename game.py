@@ -8,8 +8,9 @@ from pyglet.window import Window, key, mouse
 
 # The images used for sprites
 images = {
-    'bullet': load('tilde.png'),
-    'arch': load('arch1.png'),
+    'arch':   load('sprites/arch-rotated.png'),
+    'bullet': load('sprites/tilde.png'),
+    'star':   load('sprites/star.png'),
 }
 
 # The sprites
