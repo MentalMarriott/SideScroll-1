@@ -7,6 +7,8 @@ from pyglet.gl import *
 from pyglet.window import Window, key, mouse
 from pyglet.window.key import KeyStateHandler
 
+fps_display = pyglet.clock.ClockDisplay()
+
 # The images used for sprites
 images = {
     'arch':   load('sprites/arch-rotated.png'),
@@ -33,10 +35,11 @@ class Game(Window):
         clock.schedule_interval(self.update, 1/60.0)
 
     def on_draw(self):
-        """Clear the window and draw the sprites"""
+        """Clear the window, draw the sprites and display framerate"""
         self.clear()
         self.arch.draw()
         self.bullet.draw()
+	fps_display.draw()
 
     def on_mouse_press(self, x, y, button, modifiers):
         """This is run when a mouse button is pressed"""
